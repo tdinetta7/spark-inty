@@ -28,7 +28,7 @@ var clientSecret = process.env.CLIENT_SECRET || "772c2882806539bee681288640608f5
 var port = process.env.PORT || 8080;
 var redirectURI = process.env.REDIRECT_URI || `http://localhost:${port}/oauth`; // where your integration is waiting for Cisco Spark to redirect and send the authorization code
 var state = process.env.STATE || "CiscoDevNet"; // state can be used for security and/or correlation purposes
-var scopes = "spark:people_read"; // supported scopes are documented at: https://developer.ciscospark.com/add-integration.html, the scopes separator is a space, example: "spark:people_read spark:rooms_read"
+var scopes = "spark:all"; // supported scopes are documented at: https://developer.ciscospark.com/add-integration.html, the scopes separator is a space, example: "spark:people_read spark:rooms_read"
 
 //
 // Step 1: initiate the OAuth flow
