@@ -234,7 +234,64 @@ function oauthFlowCompleted(access_token, res) {
         var str = read(join(__dirname, '/www/display-name.ejs'), 'utf8');
         var compiled = ejs.compile(str)({ "displayName": json.displayName });        
         res.send(compiled);
+
+        console.log(json.id);
     });
+
+    //td
+    // Send message name: POST https://api.ciscospark.com/v1/messages
+    var post_options = {
+        method: 'POST',
+        url: 'https://api.ciscospark.com/v1/messages',
+        headers:
+        {
+            "Authorization": "Bearer " + access_token,
+            "Content-type": "application/json; charset=utf-8"
+        },
+        form:
+        {
+            roomId: "Y2lzY29zcGFyazovL3VzL1JPT00vNmY1NTQ3OTAtZjQ4Zi0xMWU3LWFlZjEtYzNlNmVmNTE0N2Y5",
+            file: "https://static1.squarespace.com/static/54e8ba93e4b07c3f655b452e/t/56c2a04520c64707756f4267/1493764650017/",
+            text: "tester!"
+        }
+    };
+
+    request(post_options, function (message, errors, trackingId) {
+        if (errors) {
+            debug("While posting, received errors: ");
+            // debug(JSON.parse(errors));
+            return;
+        }
+
+        // Check JSON payload is compliant with specs https://api.ciscospark.com/v1/people/me
+        //    {
+        //      "id": "Y2lzY29zcGFyazovL3VzL1BFT1BMRS85MmIzZGQ5YS02NzVkLTRhNDEtOGM0MS0yYWJkZjg5ZjQ0ZjQ",
+        //      "emails": [
+        //        "stsfartz@cisco.com"
+        //      ],
+        //      "displayName": "Steve Sfartz",
+        //      "avatar": "https://1efa7a94ed216783e352-c62266528714497a17239ececf39e9e2.ssl.cf1.rackcdn.com/V1~c2582d2fb9d11e359e02b12c17800f09~aqSu09sCTVOOx45HJCbWHg==~1600",
+        //      "created": "2016-02-04T15:46:20.321Z"
+        //    }
+        var json = JSON.parse(message);
+        if (!json) {
+            debug("could not parse response message into json");
+            return;
+        }
+        console.log("room response", json);
+
+        // // Uncomment to send feedback via static HTML code 
+        // //res.send("<h1>OAuth Integration example for Cisco Spark (static HTML)</h1><p>So happy to meet, " + json.displayName + " !</p>");
+        // // Current code leverages an EJS template:
+        // var str = read(join(__dirname, '/www/display-name.ejs'), 'utf8');
+        // var compiled = ejs.compile(str)({ "displayName": json.displayName });        
+        // res.send(compiled);
+
+        // console.log(json.id);
+    });
+
+
+
 }
 
 
